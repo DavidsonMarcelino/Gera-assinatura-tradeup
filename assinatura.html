@@ -1,0 +1,188 @@
+<style>
+    .btn{
+        background: #4572e0;
+        border: 1px solid #57e;
+        border-radius: 4px;
+        color: #fff;
+        cursor: pointer;
+        font-family: Verdana, sans-serif;
+        font-size: 16px;
+        padding: 8px 16px;
+    }
+    .btn:hover{
+        background: #57e;
+        border: 1px solid #68f;
+        color: #eee;
+    }
+</style>
+<h2 style="font-family: Verdana, sans-serif;">
+    Gerador de assinatura TradeUp
+</h2>
+<hr>
+<div style="display: flex; align-content: space-between; font-family: Verdana, sans-serif; font-size: 14px; color: #224; ">
+    <div>
+        <img src="https://i.ibb.co/7rZxBPW/Logo.png" alt="tradeup Group" style="height: 200px; margin-right: 24px"/>
+        <div style="display: flex; justify-content: space-evenly; margin: 8px 24px 0 0">
+            <a href="https://www.linkedin.com/company/22325244" target="_blank">
+                <img src="https://i.ibb.co/0jFZkXq/linkedin.png" alt="Linkedin Icon" style="height: 32px; margin-right: 8px"/>
+            </a>
+            <a href="https://www.instagram.com/tradeupgroup/" target="_blank">
+                <img src="https://i.ibb.co/C8Hw0gy/instagram.png" alt="Instagram Icon" style="height: 32px; margin-right: 8px"/>
+            </a>
+            <a href="https://www.facebook.com/tradeupgroupoficial" target="_blank">
+                <img src="https://i.ibb.co/7GNnPqd/facebook.png" alt="Facebook Icon" style="height: 32px; margin-right: 8px"/>
+            </a>
+            <a href="https://www.youtube.com/channel/UCXX9lgmS4LLFhrfCrsDCmyA" target="_blank">
+                <img src="https://i.ibb.co/31yyqJs/youtube.png" alt="Y outube Icon" style="height: 32px; margin-right: 8px"/>
+            </a>
+        </div>
+    </div>
+    <div style="height: 200px; text-align: start; display: flex; flex-direction: column; justify-content: space-evenly;">
+        <div style="font-size: 16px; margin-bottom: 4px">
+            <input type="text" id="nome" placeholder="Digite seu nome"><br>
+            <input type="text" id="cargo" placeholder="Digite seu cargo">
+        </div>
+        <div style="border: #4572e0 1px solid; margin: 6px 0;"></div>
+        <div>
+            <img src="https://i.ibb.co/Fs8Kw8m/celular.png" alt="Phone Icon" style="height: 16px; margin-right: 8px"/>
+            <input type="phone" id="telefone" placeholder="Digite seu telefone">
+            <img src="https://i.ibb.co/2yDDGvW/telefone.png" alt="Phone Icon" style="height: 16px; margin: 0 8px"/>
+            (11) 4193-2132
+        </div>
+        <div>
+            <img src="https://i.ibb.co/tmnpV77/email.png" alt="Email Icon" style="height: 16px; margin-right: 8px"/>
+            <input type="email" id="email" placeholder="Digite seu email">
+        </div>
+        <div>
+            <img src="https://i.ibb.co/37kfY2G/site.png" alt="Website Icon" style="height: 16px; margin-right: 8px"/>
+            <a href="https://www.tradeupgroup.com/" target="_blank" style="color: #224; text-decoration: none" >www.tradeupgroup.com</a>
+        </div>
+        <div>
+            <img src="https://i.ibb.co/T1YcfGs/pin.png" alt="Location Icon"  style="height: 16px; margin-right: 8px" />
+            <a href="https://www.google.com/maps/place/R.+Bonnard,+980+-+Alphaville+Empresarial,+Barueri+-+SP,+06465-134/@-23.4854046,-46.873854,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf03afb66869cd:0x528c991dc2b45c23!8m2!3d-23.4854046!4d-46.8716653!16s%2Fg%2F11cpbd2zp4"  target="_blank" style="color: #224; text-decoration: none">
+                Rua Bonnard, 980 - Barueri - SP
+            </a>
+        </div>
+    </div>
+    <div style="display: flex; flex-direction: column; justify-content: flex-end; margin-left: 50px;">
+        <button class="btn" onclick="gerarUm()">Gerar</button>
+    </div>
+</div>
+
+<script>
+    function gerarUm()
+    {
+        nome     = document.getElementById('nome').value;
+        cargo    = document.getElementById('cargo').value;
+        telefone = document.getElementById('telefone').value;
+        email    = document.getElementById('email').value;
+
+        if(nome && cargo && telefone && email)
+        {
+            arquivo = {
+                nome: nome,
+                cargo: cargo,
+                telefone: telefone,
+                email: email,
+            };
+
+            console.log(arquivo);
+            download(arquivo, arquivo.nome);
+        }else{
+            alert('Por favor, preencha todos os campos');
+        }
+    }
+
+    function gerarTodos()
+    {
+        arquivo = [{
+            nome: "Davidson Marcelino Andrade",
+            cargo: "Desenvolvedor Backend",
+            telefone: "(11) 98765-4321",
+            email: "davidson.marcelino@tradeupgroup.com",
+        },
+        {
+            nome: "Raul Seixas",
+            cargo: "Cantor de Rock Baiano",
+            telefone: "(11) 98765-4321",
+            email: "raul.seixas@tradeupgroup.com",
+        }];
+        
+        for(i = 0 ; i < arquivo.length ; i++)
+        {
+            download(arquivo[i], arquivo[i].nome);
+        }
+    }
+
+    function download(data, filename) {
+
+        html = '<div style="display: flex; align-content: space-between; font-family: Verdana, sans-serif; font-size: 14px; color: #224; ">\
+            <div>\
+                <img src="https://i.ibb.co/7rZxBPW/Logo.png" alt="tradeup Group" style="height: 200px; margin-right: 24px"/>\
+                <div style="display: flex; justify-content: space-evenly; margin: 8px 24px 0 0">\
+                    <a href="https://www.linkedin.com/company/22325244" target="_blank">\
+                        <img src="https://i.ibb.co/0jFZkXq/linkedin.png" alt="Linkedin Icon" style="height: 32px; margin-right: 8px"/>\
+                    </a>\
+                    <a href="https://www.instagram.com/tradeupgroup/" target="_blank">\
+                        <img src="https://i.ibb.co/C8Hw0gy/instagram.png" alt="Instagram Icon" style="height: 32px; margin-right: 8px"/>\
+                    </a>\
+                    <a href="https://www.facebook.com/tradeupgroupoficial" target="_blank">\
+                        <img src="https://i.ibb.co/7GNnPqd/facebook.png" alt="Facebook Icon" style="height: 32px; margin-right: 8px"/>\
+                    </a>\
+                    <a href="https://www.youtube.com/channel/UCXX9lgmS4LLFhrfCrsDCmyA" target="_blank">\
+                        <img src="https://i.ibb.co/31yyqJs/youtube.png" alt="Youtube Icon" style="height: 32px; margin-right: 8px"/>\
+                    </a>\
+                </div>\
+            </div>\
+            <div style="height: 200px; text-align: start; display: flex; flex-direction: column; justify-content: space-evenly;">\
+                <div style="font-size: 16px; margin-bottom: 4px">\
+                    <b>' + data.nome +  '</b><br>\
+                    <span>' + data.cargo + '</span>\
+                </div>\
+                <div style="border: #4572e0 1px solid; margin: 6px 0;"></div>\
+                <div>\
+                    <img src="https://i.ibb.co/Fs8Kw8m/celular.png" alt="Phone Icon" style="height: 16px; margin-right: 8px"/>'
+                    + data.telefone + 
+                    '<img src="https://i.ibb.co/2yDDGvW/telefone.png" alt="Phone Icon" style="height: 16px; margin: 0 8px"/>\
+                    (11) 4193-2132\
+                </div>\
+                <div>\
+                    <img src="https://i.ibb.co/tmnpV77/email.png" alt="Email Icon" style="height: 16px; margin-right: 8px"/>\
+                    <a href="mailto:' + data.email + '" style="color: #224; text-decoration: none" >' + data.email + '</a>\
+                </div>\
+                <div>\
+                    <img src="https://i.ibb.co/37kfY2G/site.png" alt="Website Icon" style="height: 16px; margin-right: 8px"/>\
+                    <a href="https://www.tradeupgroup.com/" target="_blank" style="color: #224; text-decoration: none" >www.tradeupgroup.com</a>\
+                </div>\
+                <div>\
+                    <img src="https://i.ibb.co/T1YcfGs/pin.png" alt="Location Icon"  style="height: 16px; margin-right: 8px" />\
+                    <a href="https://www.google.com/maps/place/R.+Bonnard,+980+-+Alphaville+Empresarial,+Barueri+-+SP,+06465-134/@-23.4854046,-46.873854,17z/data=!3m1!4b1!4m6!3m5!1s0x94cf03afb66869cd:0x528c991dc2b45c23!8m2!3d-23.4854046!4d-46.8716653!16s%2Fg%2F11cpbd2zp4"  target="_blank" style="color: #224; text-decoration: none">\
+                        Rua Bonnard, 980 - Barueri - SP\
+                    </a>\
+                </div>\
+            </div>\
+        </div>';
+
+        const file = new Blob([html], {type: 'text/html'});
+        
+        if (window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(file, filename);
+            return
+        }
+        
+        const a = document.createElement("a");
+        const url = URL.createObjectURL(file);
+            
+        a.href = url;
+        a.download = filename;
+        
+        document.body.appendChild(a);
+        
+        a.click();
+        
+        setTimeout(function() {
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);  
+        },0); 
+    }
+</script>
