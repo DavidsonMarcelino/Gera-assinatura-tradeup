@@ -39,19 +39,21 @@
     </div>
     <div style="height: 200px; text-align: start; display: flex; flex-direction: column; justify-content: space-evenly;">
         <div style="font-size: 16px; margin-bottom: 4px">
-            <input type="text" id="nome" placeholder="Digite seu nome"><br>
+            <input type="text" id="nome" placeholder="Digite seu nome" oninput="preencheEmail()"><br>
             <input type="text" id="cargo" placeholder="Digite seu cargo">
         </div>
         <div style="border: #4572e0 1px solid; margin: 6px 0;"></div>
         <div>
             <img src="https://i.ibb.co/Fs8Kw8m/celular.png" alt="Phone Icon" style="height: 16px; margin-right: 8px"/>
-            <input type="phone" id="telefone" placeholder="Digite seu telefone">
+
+            <input type="phone" id="telefone" placeholder="Digite seu telefone" oninput="trataTelefone(event)" maxlength="15">
             <img src="https://i.ibb.co/2yDDGvW/telefone.png" alt="Phone Icon" style="height: 16px; margin: 0 8px"/>
-            (11) 4193-2132
+            +55 (11) 4193-2132
         </div>
         <div>
             <img src="https://i.ibb.co/tmnpV77/email.png" alt="Email Icon" style="height: 16px; margin-right: 8px"/>
-            <input type="email" id="email" placeholder="Digite seu email">
+            <input type="email" id="email" placeholder="Digite seu email">@tradeupgroup.com
+
         </div>
         <div>
             <img src="https://i.ibb.co/37kfY2G/site.png" alt="Website Icon" style="height: 16px; margin-right: 8px"/>
@@ -72,10 +74,10 @@
 <script>
     function gerarUm()
     {
-        nome     = document.getElementById('nome').value;
-        cargo    = document.getElementById('cargo').value;
+        nome     = trataNome(document.getElementById('nome').value);
+        cargo    = trataCargo(document.getElementById('cargo').value);
         telefone = document.getElementById('telefone').value;
-        email    = document.getElementById('email').value;
+        email    = trataEmail(document.getElementById('email').value);
 
         if(nome && cargo && telefone && email)
         {
@@ -86,35 +88,41 @@
                 email: email,
             };
 
-            console.log(arquivo);
             download(arquivo, arquivo.nome);
+
+            document.getElementById('nome').value     = ''; 
+            document.getElementById('cargo').value    = '';
+            document.getElementById('telefone').value = '';
+            document.getElementById('email').value    = '';
         }else{
             alert('Por favor, preencha todos os campos');
         }
     }
 
-    function gerarTodos()
-    {
-        arquivo = [{
-            nome: "Davidson Marcelino Andrade",
-            cargo: "Desenvolvedor Backend",
-            telefone: "(11) 98765-4321",
-            email: "davidson.marcelino@tradeupgroup.com",
-        },
-        {
-            nome: "Raul Seixas",
-            cargo: "Cantor de Rock Baiano",
-            telefone: "(11) 98765-4321",
-            email: "raul.seixas@tradeupgroup.com",
-        }];
+    // function gerarTodos()
+    // {
+    //     arquivo = [{
+    //         nome: "Davidson Marcelino Andrade",
+    //         cargo: "Desenvolvedor Backend",
+    //         telefone: "(11) 98765-4321",
+    //         email: "davidson.marcelino@tradeupgroup.com",
+    //     },
+    //     {
+    //         nome: "Raul Seixas",
+    //         cargo: "Cantor de Rock Baiano",
+    //         telefone: "(11) 98765-4321",
+    //         email: "raul.seixas@tradeupgroup.com",
+    //     }];
         
-        for(i = 0 ; i < arquivo.length ; i++)
-        {
-            download(arquivo[i], arquivo[i].nome);
-        }
-    }
+    //     for(i = 0 ; i < arquivo.length ; i++)
+    //     {
+    //         download(arquivo[i], arquivo[i].nome);
+    //     }
+    // }
 
-    function download(data, filename) {
+    function download(data, nomeArquivo)
+    {
+
 
         html = '<div style="display: flex; align-content: space-between; font-family: Verdana, sans-serif; font-size: 14px; color: #224; ">\
             <div>\
@@ -141,14 +149,14 @@
                 </div>\
                 <div style="border: #4572e0 1px solid; margin: 6px 0;"></div>\
                 <div>\
-                    <img src="https://i.ibb.co/Fs8Kw8m/celular.png" alt="Phone Icon" style="height: 16px; margin-right: 8px"/>'
-                    + data.telefone + 
+                    <img src="https://i.ibb.co/Fs8Kw8m/celular.png" alt="Phone Icon" style="height: 16px; margin-right: 8px"/>\
+                    +55 ' + data.telefone + 
                     '<img src="https://i.ibb.co/2yDDGvW/telefone.png" alt="Phone Icon" style="height: 16px; margin: 0 8px"/>\
-                    (11) 4193-2132\
+                    +55 (11) 4193-2132\
                 </div>\
                 <div>\
                     <img src="https://i.ibb.co/tmnpV77/email.png" alt="Email Icon" style="height: 16px; margin-right: 8px"/>\
-                    <a href="mailto:' + data.email + '" style="color: #224; text-decoration: none" >' + data.email + '</a>\
+                    <a href="mailto:' + data.email + '@tradeupgroup.com" style="color: #224; text-decoration: none" >' + data.email + '@tradeupgroup.com</a>\
                 </div>\
                 <div>\
                     <img src="https://i.ibb.co/37kfY2G/site.png" alt="Website Icon" style="height: 16px; margin-right: 8px"/>\
@@ -166,23 +174,92 @@
         const file = new Blob([html], {type: 'text/html'});
         
         if (window.navigator.msSaveOrOpenBlob) {
-            window.navigator.msSaveOrOpenBlob(file, filename);
+            window.navigator.msSaveOrOpenBlob(file, nomeArquivo);
             return
         }
         
-        const a = document.createElement("a");
+        const elemento = document.createElement("a");
         const url = URL.createObjectURL(file);
             
-        a.href = url;
-        a.download = filename;
+        elemento.href = url;
+        elemento.download = nomeArquivo;
         
-        document.body.appendChild(a);
+        document.body.appendChild(elemento);
         
-        a.click();
+        elemento.click();
         
         setTimeout(function() {
-        document.body.removeChild(a);
-        window.URL.revokeObjectURL(url);  
-        },0); 
+            document.body.removeChild(elemento);
+            window.URL.revokeObjectURL(url);  
+        }, 0); 
     }
-</script>
+
+    function trataNome(nomeCompleto)
+    {
+        let nomeSeparado = nomeCompleto.split(" ");
+        nome = '';
+
+        for(let i = 0 ; i < nomeSeparado.length ; i++)
+        {
+            if(nomeSeparado[i])
+            {
+                nome += nomeSeparado[i].toUpperCase()[0] + nomeSeparado[i].substring(1).toLowerCase() + " ";
+            }
+        }
+
+        return nome;
+    }
+
+    function trataCargo(cargoCompleto)
+    {
+        let cargoSeparado = cargoCompleto.split(" ");
+        cargo = '';
+
+        for(let i = 0 ; i < cargoSeparado.length ; i++)
+        {
+            if(cargoSeparado[i])
+            {
+                cargo += cargoSeparado[i].toUpperCase()[0] + cargoSeparado[i].substring(1).toLowerCase() + " ";
+            }
+        }
+
+        return cargo;
+    }
+
+
+    function trataEmail(emailCompleto)
+    {
+        return emailCompleto.split('@')[0];
+    }
+
+    function preencheEmail()
+    {
+        nome = trataNome(document.getElementById('nome').value).toLowerCase().split(' ');
+        nomeEmail = '';
+
+        for(let i = 0; i < 2 ; i++)
+        {
+            if((i+1) < 2)
+            {
+                nomeEmail += nome[i] + ".";
+            }else{
+                nomeEmail += nome[i];
+            }
+        }
+
+        document.getElementById('email').value = nomeEmail;
+    }
+
+    const trataTelefone = (event) => {
+        let input = event.target
+        input.value = mascara(input.value)
+    }
+
+    const mascara = (value) => {
+        if (!value) return ""
+        value = value.replace(/\D/g,'')
+        value = value.replace(/(\d{2})(\d)/,"($1) $2")
+        value = value.replace(/(\d)(\d{4})$/,"$1-$2")
+        return value
+    }
+</script>sssssssssssssssss
