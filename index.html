@@ -14,8 +14,11 @@
         border: 1px solid #68f;
         color: #eee;
     }
+    h2{
+        font-family: Verdana, sans-serif;
+    }
 </style>
-<h2 style="font-family: Verdana, sans-serif;">
+<h2>
     Gerador de assinatura TradeUp
 </h2>
 <hr>
@@ -68,7 +71,10 @@
         <button class="btn" onclick="gerarUm()">Gerar</button>
     </div>
 </div>
-
+<br><hr><br>
+<h2>Importar JSON com multiplos nomes</h2>
+<input type="file" id="json" oninput="document.getElementById('btnGeraTodos').style.display = 'inline-block'">
+<button class="btn" id="btnGeraTodos" onclick="gerarTodos()" style="display:none;">Gerar</button>
 <script>
     function gerarUm()
     {
@@ -97,26 +103,35 @@
         }
     }
 
-    // function gerarTodos()
-    // {
-    //     arquivo = [{
-    //         nome: "Davidson Marcelino Andrade",
-    //         cargo: "Desenvolvedor Backend",
-    //         telefone: "(11) 98765-4321",
-    //         email: "davidson.marcelino@tradeupgroup.com",
-    //     },
-    //     {
-    //         nome: "Raul Seixas",
-    //         cargo: "Cantor de Rock Baiano",
-    //         telefone: "(11) 98765-4321",
-    //         email: "raul.seixas@tradeupgroup.com",
-    //     }];
-        
-    //     for(i = 0 ; i < arquivo.length ; i++)
-    //     {
-    //         download(arquivo[i], arquivo[i].nome);
-    //     }
-    // }
+    function gerarTodos()
+    {
+        var arquivo = [];
+        if(document.getElementById('json').files[0].type === "application/json")
+        {
+            leitor = new FileReader();
+
+            data = document.getElementById('json').files[0];
+
+            leitor.readAsText(data);
+
+            leitor.addEventListener('load', (e) => {
+                arquivo = JSON.parse(e.target.result);
+                arquivo.length = Object.keys(arquivo).length;
+
+                if(arquivo.length)
+                {
+                    for(i = 0 ; i < arquivo.length ; i++)
+                    {
+                        download(arquivo[i], arquivo[i].nome);
+                    }
+                }else{
+                    alert('JSON vazio');
+                }
+            });
+        }else{
+            alert('Por favor insira um arquivo JSON');
+        }
+    }
 
     function download(data, nomeArquivo)
     {
@@ -232,19 +247,25 @@
     function preencheEmail()
     {
         nome = trataNome(document.getElementById('nome').value).toLowerCase().split(' ');
-        nomeEmail = '';
-
-        for(let i = 0; i < 2 ; i++)
+        if(document.getElementById('nome').value)
         {
-            if((i+1) < 2)
-            {
-                nomeEmail += nome[i] + ".";
-            }else{
-                nomeEmail += nome[i];
-            }
-        }
 
-        document.getElementById('email').value = nomeEmail;
+            nomeEmail = '';
+            
+            for(let i = 0; i < 2 ; i++)
+            {
+                if((i+1) < 2)
+                {
+                    nomeEmail += nome[i] + ".";
+                }else{
+                    nomeEmail += nome[i];
+                }
+            }
+            
+            document.getElementById('email').value = nomeEmail;
+        }else{
+            document.getElementById('email').value = ''; 
+        }
     }
 
     const trataTelefone = (event) => {
