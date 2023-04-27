@@ -122,6 +122,10 @@
                 {
                     for(i = 0 ; i < arquivo.length ; i++)
                     {
+                        arquivo[i].nome  = trataNome(arquivo[i].nome);
+                        arquivo[i].cargo = trataCargo(arquivo[i].cargo);
+                        arquivo[i].email = trataEmail(arquivo[i].email);
+
                         download(arquivo[i], arquivo[i].nome);
                     }
                 }else{
