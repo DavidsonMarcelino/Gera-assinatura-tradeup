@@ -18,9 +18,7 @@
         font-family: Verdana, sans-serif;
     }
 </style>
-<h2>
-    Gerador de assinatura TradeUp
-</h2>
+<h2>Gerador de assinatura TradeUp</h2>
 <hr>
 <div style="display: flex; align-content: space-between; font-family: Verdana, sans-serif; font-size: 14px; color: #224; ">
     <div>
@@ -47,7 +45,7 @@
         </div>
         <div style="border: #4572e0 1px solid; margin: 6px 0;"></div>
         <div>
-            <img src="https://i.ibb.co/Fs8Kw8m/celular.png" alt="Phone Icon" style="height: 16px; margin-right: 8px"/>
+            <img src="https://i.ibb.co/Fs8Kw8m/celular.png" alt="Phone Icon" style="height: 18px; margin-right: 8px"/>
             <input type="phone" id="telefone" placeholder="Digite seu telefone" oninput="trataTelefone(event)" maxlength="15">
             <img src="https://i.ibb.co/2yDDGvW/telefone.png" alt="Phone Icon" style="height: 16px; margin: 0 8px"/>
             +55 (11) 4193-2132
@@ -73,7 +71,7 @@
 </div>
 <br><hr><br>
 <h2>Importar JSON com multiplos nomes</h2>
-<input type="file" id="json" oninput="document.getElementById('btnGeraTodos').style.display = 'inline-block'">
+<input type="file" id="json" oninput="ativaBtn()">
 <button class="btn" id="btnGeraTodos" onclick="gerarTodos()" style="display:none;">Gerar</button>
 <script>
     function gerarUm()
@@ -86,10 +84,10 @@
         if(nome && cargo && telefone && email)
         {
             arquivo = {
-                nome: nome,
-                cargo: cargo,
+                nome:     nome,
+                cargo:    cargo,
                 telefone: telefone,
-                email: email,
+                email:    email,
             };
 
             download(arquivo, arquivo.nome);
@@ -108,10 +106,9 @@
         var arquivo = [];
         if(document.getElementById('json').files[0].type === "application/json")
         {
-            leitor = new FileReader();
-
             data = document.getElementById('json').files[0];
 
+            leitor = new FileReader();
             leitor.readAsText(data);
 
             leitor.addEventListener('load', (e) => {
@@ -139,7 +136,6 @@
 
     function download(data, nomeArquivo)
     {
-
         html = '<div style="display: flex; align-content: space-between; font-family: Verdana, sans-serif; font-size: 14px; color: #224; ">\
             <div>\
                 <img src="https://i.ibb.co/7rZxBPW/Logo.png" alt="tradeup Group" style="height: 200px; margin-right: 24px"/>\
@@ -188,22 +184,23 @@
         </div>';
 
         const file = new Blob([html], {type: 'text/html'});
-        
-        if (window.navigator.msSaveOrOpenBlob) {
+
+        if(window.navigator.msSaveOrOpenBlob)
+        {
             window.navigator.msSaveOrOpenBlob(file, nomeArquivo);
-            return
+            return;
         }
-        
+
         const elemento = document.createElement("a");
         const url = URL.createObjectURL(file);
-            
+
         elemento.href = url;
         elemento.download = nomeArquivo;
-        
+
         document.body.appendChild(elemento);
-        
+
         elemento.click();
-        
+
         setTimeout(function() {
             document.body.removeChild(elemento);
             window.URL.revokeObjectURL(url);  
@@ -213,7 +210,7 @@
     function trataNome(nomeCompleto)
     {
         let nomeSeparado = nomeCompleto.split(" ");
-        nome = '';
+        let nome = '';
 
         for(let i = 0 ; i < nomeSeparado.length ; i++)
         {
@@ -229,7 +226,7 @@
     function trataCargo(cargoCompleto)
     {
         let cargoSeparado = cargoCompleto.split(" ");
-        cargo = '';
+        let cargo = '';
 
         for(let i = 0 ; i < cargoSeparado.length ; i++)
         {
@@ -242,7 +239,6 @@
         return cargo;
     }
 
-
     function trataEmail(emailCompleto)
     {
         return emailCompleto.split('@')[0];
@@ -250,12 +246,12 @@
 
     function preencheEmail()
     {
-        nome = trataNome(document.getElementById('nome').value).toLowerCase().split(' ');
-        if(document.getElementById('nome').value)
-        {
+        let nome = trataNome(document.getElementById('nome').value).toLowerCase().split(' ');
 
+        if(nome[0])
+        {
             nomeEmail = '';
-            
+
             for(let i = 0; i < 2 ; i++)
             {
                 if((i+1) < 2)
@@ -265,10 +261,28 @@
                     nomeEmail += nome[i];
                 }
             }
-            
+
             document.getElementById('email').value = nomeEmail;
         }else{
             document.getElementById('email').value = ''; 
+        }
+    }
+
+    function ativaBtn()
+    {
+        if(document.getElementById('json').files[0])
+        {
+            document.getElementById('btnGeraTodos').style.display = 'inline-block';
+
+            if(document.getElementById('json').files[0].type !== "application/json")
+            {
+                document.getElementById('json').style.color = "red";
+            }else{
+                document.getElementById('json').style.color = "black";
+            }
+        }else{
+            document.getElementById('btnGeraTodos').style.display = 'none';
+            document.getElementById('json').style.color = "black";
         }
     }
 
