@@ -120,21 +120,26 @@
             leitor.readAsText(data);
 
             leitor.addEventListener('load', (e) => {
-                arquivo = JSON.parse(e.target.result);
-                arquivo.length = Object.keys(arquivo).length;
-
-                if(arquivo.length)
+                try
                 {
-                    for(i = 0 ; i < arquivo.length ; i++)
-                    {
-                        arquivo[i].nome  = trataNome(arquivo[i].nome);
-                        arquivo[i].cargo = trataCargo(arquivo[i].cargo);
-                        arquivo[i].email = trataEmail(arquivo[i].email);
+                    arquivo = JSON.parse(e.target.result);
+                    arquivo.length = Object.keys(arquivo).length;
 
-                        download(arquivo[i], arquivo[i].nome);
+                    if(arquivo.length)
+                    {
+                        for(i = 0 ; i < arquivo.length ; i++)
+                        {
+                            arquivo[i].nome  = trataNome(arquivo[i].nome);
+                            arquivo[i].cargo = trataCargo(arquivo[i].cargo);
+                            arquivo[i].email = trataEmail(arquivo[i].email);
+
+                            download(arquivo[i], arquivo[i].nome);
+                        }
+                    }else{
+                        alert('JSON vazio');
                     }
-                }else{
-                    alert('JSON vazio');
+                }catch{
+                    alert("JSON inválido");
                 }
             });
         }else{
