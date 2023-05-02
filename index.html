@@ -20,6 +20,7 @@
     input{
         background: transparent;
         border: none;
+        color: #224;
         font-size: 14px;
     }
     input:focus{
@@ -48,7 +49,7 @@
     </div>
     <div style="height: 200px; text-align: start; display: flex; flex-direction: column; justify-content: space-evenly;">
         <div style="font-size: 16px; margin-bottom: 4px">
-            <input type="text" id="nome" placeholder="Digite seu nome" oninput="preencheEmail();" style="font-weight: 700;"><br>
+            <input type="text" id="nome" placeholder="Digite seu nome" oninput="preencheEmail();" style="font-weight: 700;" ><br>
             <input type="text" id="cargo" placeholder="Digite seu cargo">
         </div>
         <div style="border: #4572e0 1px solid; margin: 6px 0;"></div>
@@ -139,6 +140,7 @@
                         alert('JSON vazio');
                     }
                 }catch{
+                    document.getElementById('json').style.color = "red";
                     alert("JSON inválido");
                 }
             });
@@ -292,11 +294,11 @@
             {
                 document.getElementById('json').style.color = "red";
             }else{
-                document.getElementById('json').style.color = "black";
+                document.getElementById('json').style.color = "#224";
             }
         }else{
             document.getElementById('btnGeraTodos').style.display = 'none';
-            document.getElementById('json').style.color = "black";
+            document.getElementById('json').style.color = "#224";
         }
     }
 
@@ -312,4 +314,6 @@
         value = value.replace(/(\d)(\d{4})$/,"$1-$2")
         return value
     }
+
+    document.getElementById("nome").focus();
 </script>
