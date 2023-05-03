@@ -17,10 +17,19 @@
     h2{
         font-family: Verdana, sans-serif;
     }
+    input{
+        background: transparent;
+        border: none;
+        color: #224;
+        font-size: 14px;
+    }
+    input:focus{
+        outline: none;
+    }
 </style>
 <h2>Gerador de assinatura TradeUp</h2>
 <hr>
-<div style="display: flex; align-content: space-between; font-family: Verdana, sans-serif; font-size: 14px; color: #224; ">
+<div style="display: flex; align-content: space-between; font-family: Verdana, sans-serif; font-size: 14px; color: #224;">
     <div>
         <img src="https://i.ibb.co/7rZxBPW/Logo.png" alt="tradeup Group" style="height: 200px; margin-right: 24px"/>
         <div style="display: flex; justify-content: space-evenly; margin: 8px 24px 0 0">
@@ -40,20 +49,19 @@
     </div>
     <div style="height: 200px; text-align: start; display: flex; flex-direction: column; justify-content: space-evenly;">
         <div style="font-size: 16px; margin-bottom: 4px">
-            <input type="text" id="nome" placeholder="Digite seu nome" oninput="preencheEmail()"><br>
+            <input type="text" id="nome" placeholder="Digite seu nome" oninput="preencheEmail();" style="font-weight: 700;" ><br>
             <input type="text" id="cargo" placeholder="Digite seu cargo">
         </div>
         <div style="border: #4572e0 1px solid; margin: 6px 0;"></div>
         <div>
             <img src="https://i.ibb.co/Fs8Kw8m/celular.png" alt="Phone Icon" style="height: 18px; margin-right: 8px"/>
-            <input type="phone" id="telefone" placeholder="Digite seu telefone" oninput="trataTelefone(event)" maxlength="15">
+            +55 <input type="phone" id="telefone" placeholder="Digite seu telefone" oninput="trataTelefone(event); this.size = (this.value.length * 0.81);" maxlength="15">
             <img src="https://i.ibb.co/2yDDGvW/telefone.png" alt="Phone Icon" style="height: 16px; margin: 0 8px"/>
             +55 (11) 4193-2132
         </div>
         <div>
             <img src="https://i.ibb.co/tmnpV77/email.png" alt="Email Icon" style="height: 16px; margin-right: 8px"/>
-            <input type="email" id="email" placeholder="Digite seu email">@tradeupgroup.com
-
+            <input type="email" id="email" placeholder="Digite seu email" oninput="this.size = (this.value.length * 0.81)">@tradeupgroup.com
         </div>
         <div>
             <img src="https://i.ibb.co/37kfY2G/site.png" alt="Website Icon" style="height: 16px; margin-right: 8px"/>
@@ -113,21 +121,27 @@
             leitor.readAsText(data);
 
             leitor.addEventListener('load', (e) => {
-                arquivo = JSON.parse(e.target.result);
-                arquivo.length = Object.keys(arquivo).length;
-
-                if(arquivo.length)
+                try
                 {
-                    for(i = 0 ; i < arquivo.length ; i++)
-                    {
-                        arquivo[i].nome  = trataNome(arquivo[i].nome);
-                        arquivo[i].cargo = trataCargo(arquivo[i].cargo);
-                        arquivo[i].email = trataEmail(arquivo[i].email);
+                    arquivo = JSON.parse(e.target.result);
+                    arquivo.length = Object.keys(arquivo).length;
 
-                        download(arquivo[i], arquivo[i].nome);
+                    if(arquivo.length)
+                    {
+                        for(i = 0 ; i < arquivo.length ; i++)
+                        {
+                            arquivo[i].nome  = trataNome(arquivo[i].nome);
+                            arquivo[i].cargo = trataCargo(arquivo[i].cargo);
+                            arquivo[i].email = trataEmail(arquivo[i].email);
+
+                            download(arquivo[i], arquivo[i].nome);
+                        }
+                    }else{
+                        alert('JSON vazio');
                     }
-                }else{
-                    alert('JSON vazio');
+                }catch{
+                    document.getElementById('json').style.color = "red";
+                    alert("JSON inválido");
                 }
             });
         }else{
@@ -264,6 +278,7 @@
             }
 
             document.getElementById('email').value = nomeEmail;
+            document.getElementById('email').size = (document.getElementById('email').value.length * 0.81)
         }else{
             document.getElementById('email').value = ''; 
         }
@@ -279,11 +294,11 @@
             {
                 document.getElementById('json').style.color = "red";
             }else{
-                document.getElementById('json').style.color = "black";
+                document.getElementById('json').style.color = "#224";
             }
         }else{
             document.getElementById('btnGeraTodos').style.display = 'none';
-            document.getElementById('json').style.color = "black";
+            document.getElementById('json').style.color = "#224";
         }
     }
 
@@ -299,4 +314,6 @@
         value = value.replace(/(\d)(\d{4})$/,"$1-$2")
         return value
     }
+
+    document.getElementById("nome").focus();
 </script>
